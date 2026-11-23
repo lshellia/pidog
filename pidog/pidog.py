@@ -73,16 +73,14 @@ def error(msg, end='\n', file=sys.stdout, flush=False):
 
 
 def compare_version(original_version, object_version):
-    or_v = tuple(int(val) for val in original_version.split('.'))
-    ob_v = tuple(int(val) for val in object_version.split('.'))
-    return (or_v >= or_v)
+    return np.lib.NumpyVersion(original_version) >= object_version
     
 if compare_version(np.__version__, '2.0.0'):
     def numpy_mat(data):
         return np.asmatrix(data)
 else:
     def numpy_mat(data):
-        return numpy_mat(data)
+        return np.matrix(data)
 
 class Pidog():
 

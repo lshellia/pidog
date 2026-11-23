@@ -14,7 +14,11 @@ class ActionDict(dict):
         self.height = 95
 
     def __getitem__(self, item):
-        return eval("self.%s" % item.replace(" ", "_"))
+        name = item.replace(" ", "_")
+        action = getattr(type(self), name, None) if not name.startswith('_') else None
+        if not isinstance(action, property):
+            raise KeyError(item)
+        return action.__get__(self, type(self))
 
     def set_height(self, height):
         if height in range(20, 95):
